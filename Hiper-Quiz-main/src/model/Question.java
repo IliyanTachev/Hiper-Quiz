@@ -10,6 +10,9 @@ public class Question extends AbstractEntity<Long, Quiz> {
     private String picture;       // (optional) - if the Question includes picture, valid URL;
     private List<Answer> answers; // list of Answer entities for the Question;
 
+    public Question() {
+    }
+
     public Question(Quiz quiz, String text, List<Answer> answers) {
         this.quiz = quiz;
         this.text = text;
@@ -21,6 +24,11 @@ public class Question extends AbstractEntity<Long, Quiz> {
         this.text = text;
         this.picture = picture;
         this.answers = answers;
+    }
+
+    public Question(Quiz quiz, String text) {
+        this.quiz = quiz;
+        this.text = text;
     }
 
     public Quiz getQuiz() {

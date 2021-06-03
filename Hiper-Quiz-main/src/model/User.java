@@ -2,6 +2,7 @@ package model;
 
 import dao.AbstractEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends AbstractEntity<Long, User> {
@@ -14,32 +15,28 @@ public class User extends AbstractEntity<Long, User> {
     private String description;               // optional) - string 20 - 250 characters long;
     private String metadata;                  // optional) - string up to 512 characters long, visible and editable only by Administrators;
     private boolean status;                   //  boolean - validity status of the user account;
-    private List<Quiz> quizzes;               //  list of all Quizzes created by the current User;
+    private List<Quiz> quizzes = new ArrayList<>(); //  list of all Quizzes created by the current User;
 
     public User() {
     }
 
-    public User(String email, String username, String password, Gender gender, Role role, boolean status, List<Quiz> quizzes) {
+    public User(String email, String username, String password, Gender gender, boolean status) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.gender = gender;
-        this.role = role;
         this.status = status;
-        this.quizzes = quizzes;
     }
 
-    public User(String email, String username, String password, Gender gender, Role role, String picture, String description, String metadata, boolean status, List<Quiz> quizzes, List<QuizResult> results, int overallScore, List<Quiz> quizzesBlocked) {
+    public User(String username, String email, String password, Gender gender, String picture, String description, String metadata, boolean status) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.gender = gender;
-        this.role = role;
         this.picture = picture;
         this.description = description;
         this.metadata = metadata;
         this.status = status;
-        this.quizzes = quizzes;
     }
 
     public String getEmail() {
@@ -120,5 +117,25 @@ public class User extends AbstractEntity<Long, User> {
 
     public void setQuizzes(List<Quiz> quizzes) {
         this.quizzes = quizzes;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id=").append(getId());
+        sb.append(", created=").append(getCreated());
+        sb.append(", modified=").append(getModified());
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", gender=").append(gender);
+        sb.append(", role=").append(role);
+        sb.append(", picture='").append(picture).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", metadata='").append(metadata).append('\'');
+        sb.append(", status=").append(status);
+        sb.append(", quizzes=").append(quizzes);
+        sb.append('}');
+        return sb.toString();
     }
 }

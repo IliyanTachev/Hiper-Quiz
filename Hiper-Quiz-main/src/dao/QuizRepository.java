@@ -4,10 +4,12 @@ import model.Quiz;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface QuizRepository extends Repository<Long, Quiz>{
-    Optional<Quiz> findByTitle(String title);
-    Optional<Quiz> findByDescription(String description);
-    Optional<Quiz> findByTags(String tags);
-    List<Quiz> findByExpectedDuration(int expectedDuration);
+    Set<Quiz> findByTitle(String title);
+    Set<Quiz> findByDescription(String description);
+    Set<Quiz> findByTags(String tags);
+    Set<Quiz> findByExpectedDuration(int expectedDuration);
+    Set<Quiz> findByAllCriterias(String title, String description, String tags, int expectedDuration);
 }

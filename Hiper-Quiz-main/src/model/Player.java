@@ -4,14 +4,12 @@ import java.util.List;
 
 public class Player extends User{
     private List<QuizResult> results = null;  // for PLAYERS only
-    private int overallScore = 0;             // for PLAYERS only
 
     public Player() {
     }
 
-    public Player(List<QuizResult> results, int overallScore) {
+    public Player(List<QuizResult> results) {
         this.results = results;
-        this.overallScore = overallScore;
     }
 
     public List<QuizResult> getResults() {
@@ -23,18 +21,23 @@ public class Player extends User{
     }
 
     public int getOverallScore() {
-        return overallScore;
+        int totalScore = 0;
+        for(QuizResult quizResult : results){
+            totalScore += quizResult.getScore();
+        }
+        return totalScore;
     }
 
-    public void setOverallScore(int overallScore) {
-        this.overallScore = overallScore;
+    public Rank getRank(){
+        if(getOverallScore() <= 125) return Rank.JUNIOR;
+        else if(getOverallScore() <= 250) return Rank.MEDIUM;
+        return Rank.SENIOR;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Player{");
         sb.append("results=").append(results);
-        sb.append(", overallScore=").append(overallScore);
         sb.append(", email='").append(getEmail()).append('\'');
         sb.append(", username='").append(getUsername()).append('\'');
         sb.append(", password='").append(getPassword()).append('\'');
