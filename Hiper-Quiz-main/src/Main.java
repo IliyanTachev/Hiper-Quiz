@@ -4,17 +4,24 @@ import dao.QuizRepository;
 import dao.UserRepository;
 import dao.impl.*;
 import exception.EntityAlreadyExistsException;
+import exception.EntityNotFoundException;
 import model.*;
+import services.UserService;
+import services.impl.UserServiceImpl;
+import util.ConsoleReader;
+import util.InputReader;
 import util.PrintUtil;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static util.Alignment.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EntityAlreadyExistsException {
 
         // Create Users
         User[] users = {
@@ -24,10 +31,10 @@ public class Main {
                 new User("peshkoeqk", "petshko@gamil.com", "ot1do9", Gender.MALE, "snimka url", "description is here", "metadata for all", true)
         };
 
-        UserRepository userRepository = new UserRepositoryInMemoryImpl(new LongKeyGenerator());
+        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
         Arrays.asList(users).stream().forEach(u -> {
             try {
-                userRepository.create(u);
+                userService.createUser(u);
             } catch (EntityAlreadyExistsException e) {
                 e.printStackTrace();
             }
@@ -217,14 +224,64 @@ public class Main {
         questionColumns.addAll(metadataColumns);
         answerColumns.addAll(metadataColumns);
 
-        String userReport = PrintUtil.formatTable(userColumns, userRepository.findAll(), "Users List:");
+//        String userReport = PrintUtil.formatTable(userColumns, userService.getAllUsers(), "Users List:");
 //        String quizReport = PrintUtil.formatTable(quizColumns, quizRepository.findAll(), "Quizes List:");
 //        String questionReport = PrintUtil.formatTable(questionColumns, questionRepository.findAll(), "Questions List:");
 //        String answerReport = PrintUtil.formatTable(answerColumns, answerRepository.findAll(), "Answers List:");
 
-        System.out.println(userReport);
+//        System.out.println(userReport);
 //        System.out.println(quizReport);
 //        System.out.println(questionReport);
 //        System.out.println(answerReport);
+
+
+        // Menu
+        InputReader consoleReader = new ConsoleReader();
+        while(true){
+            printMenuOptions();
+            // Switch by commandId
+            switch(consoleReader.readInput()){
+                case 1:
+                    User user = consoleReader.readUserDetails();
+                    userService.createUser(user);
+                    break;
+                case 2:
+                    userService.getAllUsers().forEach(u -> System.out.println(u.toString()));
+                    break;
+                case 3:
+                    while(true){
+                        System.out.println("Enter ID: ");
+                        Long userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+                        User fetchedUser = consoleReader.readUserDetails();
+                        fetchedUser.setId(userId);
+                        try {
+                            userService.updateUser(fetchedUser);
+                            break;
+                        } catch (EntityNotFoundException ignored) {
+                        }
+                    }
+                    break;
+                case 4:
+                    while(true){
+                        System.out.println("Enter ID: ");
+                        Long userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+                        try {
+                            userService.deleteUser(userId);
+                            break;
+                        } catch (EntityNotFoundException ignored) {
+                        }
+                    }
+                    break;
+            };
+        }
+    }
+
+    private static void printMenuOptions(){
+        System.out.println("Choose command:");
+        System.out.println("-----------------------");
+        System.out.println("1. Create User");
+        System.out.println("2. List Users");
+        System.out.println("3. Update User");
+        System.out.println("4. Delete User");
     }
 }

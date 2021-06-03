@@ -39,6 +39,10 @@ public class User extends AbstractEntity<Long, User> {
         this.status = status;
     }
 
+    public User(String username, String email, String password, String gender, String description, String metadata, String picture) {
+        super();
+    }
+
     public String getEmail() {
         return email;
     }
