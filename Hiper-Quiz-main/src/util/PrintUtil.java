@@ -1,12 +1,12 @@
 package util;
 
+import dao.AbstractEntity;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static util.Alignment.CENTER;
 import static java.lang.Integer.min;
@@ -70,7 +70,23 @@ public class PrintUtil {
                     }
                     if(value != null)
                     if(value == null) value = "";
-                    appendStringAligned(sb, value.toString(), c.width, c.alignment);
+
+                    // Additional code added -> Transform Entities to Ids
+                    String result = "";
+                    try{
+                        List<AbstractEntity> entities = (List<AbstractEntity>) value;
+                        // Transform value to String
+                        result = entities.stream().map(entity -> entity.getId().toString()).collect(Collectors.joining(","));
+                    } catch(ClassCastException ignored1) {
+                        try {
+                            AbstractEntity entity = (AbstractEntity) value;
+                            result = entity.getId().toString();
+                        } catch (ClassCastException ignored2) {
+                            result = value.toString();
+                        }
+                    }
+
+                    appendStringAligned(sb, result, c.width, c.alignment);
                 } catch (NoSuchMethodException| IllegalAccessException | InvocationTargetException | NullPointerException  e) {
 //                    e.printStackTrace();
                     appendStringAligned(sb, "-", c.width, CENTER);
@@ -113,5 +129,10 @@ public class PrintUtil {
         sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
         sb.insert(0, "get");
         return sb.toString();
+    }
+
+    public static boolean isArray(Object obj)
+    {
+        return obj!=null && obj.getClass().isArray();
     }
 }

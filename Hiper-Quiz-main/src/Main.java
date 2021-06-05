@@ -52,9 +52,9 @@ public class Main {
         ));
 
         questionsAboutUSAPresidents[1].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "Elon Musk", 0),
-                new Answer(questionsAboutUSAPresidents[0], "Joe Rogan",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Joe Biden",  1)
+                new Answer(questionsAboutUSAPresidents[1], "Elon Musk", 0),
+                new Answer(questionsAboutUSAPresidents[1], "Joe Rogan",  0),
+                new Answer(questionsAboutUSAPresidents[1], "Joe Biden",  1)
         ));
 
         // Bulgaria
@@ -67,54 +67,54 @@ public class Main {
 
         // Set Answers
         questionsAboutBulgarianPresidents[0].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "Zhelyu Zhelev", 1),
-                new Answer(questionsAboutUSAPresidents[0], "Boyko Borissov",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Joe Biden",  0)
+                new Answer(questionsAboutBulgarianPresidents[0], "Zhelyu Zhelev", 1),
+                new Answer(questionsAboutBulgarianPresidents[0], "Boyko Borissov",  0),
+                new Answer(questionsAboutBulgarianPresidents[0], "Joe Biden",  0)
         ));
 
         questionsAboutBulgarianPresidents[1].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "George Purvanov", 0),
-                new Answer(questionsAboutUSAPresidents[0], "Rosen Plevneliev",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Rumen Radev",  1)
+                new Answer(questionsAboutBulgarianPresidents[1], "George Purvanov", 0),
+                new Answer(questionsAboutBulgarianPresidents[1], "Rosen Plevneliev",  0),
+                new Answer(questionsAboutBulgarianPresidents[1], "Rumen Radev",  1)
         ));
 
         questionsAboutBulgarianPresidents[2].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "Rosen Plevneliev", 1),
-                new Answer(questionsAboutUSAPresidents[0], "Kubrat Pulev",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Zhelyu Zhelev",  0)
+                new Answer(questionsAboutBulgarianPresidents[2], "Rosen Plevneliev", 1),
+                new Answer(questionsAboutBulgarianPresidents[2], "Kubrat Pulev",  0),
+                new Answer(questionsAboutBulgarianPresidents[2], "Zhelyu Zhelev",  0)
         ));
 
         questionsAboutBulgarianPresidents[3].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "Rumen Radev", 0),
-                new Answer(questionsAboutUSAPresidents[0], "Geroge Purvanov",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Petar Stoyanov",  1)
+                new Answer(questionsAboutBulgarianPresidents[3], "Rumen Radev", 0),
+                new Answer(questionsAboutBulgarianPresidents[3], "Geroge Purvanov",  0),
+                new Answer(questionsAboutBulgarianPresidents[3], "Petar Stoyanov",  1)
         ));
 
         // Russia
 
         Question[] questionsAboutRussianPresidents = {
-                new Question(quizzes[1], "Who is the current president of Russia?"),
-                new Question(quizzes[1], "Who was the 3th president of Russia?"),
-                new Question(quizzes[1], "Who was the second president of Russia?")
+                new Question(quizzes[2], "Who is the current president of Russia?"),
+                new Question(quizzes[2], "Who was the 3th president of Russia?"),
+                new Question(quizzes[2], "Who was the second president of Russia?")
         };
 
         // Set Answers
         questionsAboutRussianPresidents[0].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "George Purvanov", 0),
-                new Answer(questionsAboutUSAPresidents[0], "Vladimir Moronov",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Vladimir Putin",  1)
+                new Answer(questionsAboutRussianPresidents[0], "George Purvanov", 0),
+                new Answer(questionsAboutRussianPresidents[0], "Vladimir Moronov",  0),
+                new Answer(questionsAboutRussianPresidents[0], "Vladimir Putin",  1)
         ));
 
         questionsAboutRussianPresidents[1].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "Boris Yeltsin", 0),
-                new Answer(questionsAboutUSAPresidents[0], "Vladimir Putin",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Dmitry Medvedev",  1)
+                new Answer(questionsAboutRussianPresidents[1], "Boris Yeltsin", 0),
+                new Answer(questionsAboutRussianPresidents[1], "Vladimir Putin",  0),
+                new Answer(questionsAboutRussianPresidents[1], "Dmitry Medvedev",  1)
         ));
 
         questionsAboutRussianPresidents[2].setAnswers(List.of(
-                new Answer(questionsAboutUSAPresidents[0], "Vladimir Putin", 1),
-                new Answer(questionsAboutUSAPresidents[0], "mitry Medvedev",  0),
-                new Answer(questionsAboutUSAPresidents[0], "Boris Yeltsin",  0)
+                new Answer(questionsAboutRussianPresidents[2], "Vladimir Putin", 1),
+                new Answer(questionsAboutRussianPresidents[2], "mitry Medvedev",  0),
+                new Answer(questionsAboutRussianPresidents[2], "Boris Yeltsin",  0)
         ));
 
         quizzes[0].setQuestions(Arrays.asList(questionsAboutUSAPresidents)); // Quiz about USA presidents
@@ -170,8 +170,6 @@ public class Main {
             }
         }
 
-        System.out.println(users[0]);
-
         // Common entity metadata column descriptors
         List<PrintUtil.ColumnDescriptor> metadataColumns = List.of(
                 new PrintUtil.ColumnDescriptor("created", "Created", 19, CENTER),
@@ -196,23 +194,23 @@ public class Main {
         // Print formatted report as table
         List<PrintUtil.ColumnDescriptor> quizColumns = new ArrayList<>(List.of(
                 new PrintUtil.ColumnDescriptor("id", "ID", 5, RIGHT),
-                new PrintUtil.ColumnDescriptor("title", "Title", 12, LEFT),
-                new PrintUtil.ColumnDescriptor("author", "Author", 15, LEFT),
-                new PrintUtil.ColumnDescriptor("description", "Description", 12, LEFT),
-                new PrintUtil.ColumnDescriptor("questions", "Questions", 6, RIGHT, 2),
-                new PrintUtil.ColumnDescriptor("expectedDuration", "ExpectedDuration", 13, CENTER),
+                new PrintUtil.ColumnDescriptor("title", "Title", 22, LEFT),
+                new PrintUtil.ColumnDescriptor("author", "Author", 7, CENTER),
+                new PrintUtil.ColumnDescriptor("description", "Description", 35, LEFT),
+                new PrintUtil.ColumnDescriptor("questions", "Questions", 9, LEFT, 2),
+                new PrintUtil.ColumnDescriptor("expectedDuration", "ExpectedDuration", 16, CENTER),
                 new PrintUtil.ColumnDescriptor("picture", "Picture", 12, CENTER),
-                new PrintUtil.ColumnDescriptor("tags", "Tags", 12, CENTER)
+                new PrintUtil.ColumnDescriptor("tags", "Tags", 20, LEFT)
 
         ));
 
         // Print formatted report as table
         List<PrintUtil.ColumnDescriptor> questionColumns = new ArrayList<>(List.of(
                 new PrintUtil.ColumnDescriptor("id", "ID", 5, RIGHT),
-                new PrintUtil.ColumnDescriptor("quiz", "Quiz", 12, LEFT),
-                new PrintUtil.ColumnDescriptor("text", "Text", 15, LEFT),
+                new PrintUtil.ColumnDescriptor("quiz", "Quiz", 5, CENTER),
+                new PrintUtil.ColumnDescriptor("text", "Text", 40, LEFT),
                 new PrintUtil.ColumnDescriptor("picture", "Picture", 12, LEFT),
-                new PrintUtil.ColumnDescriptor("answers", "Answers", 6, RIGHT, 2)
+                new PrintUtil.ColumnDescriptor("answers", "Answers", 10, LEFT, 2)
         ));
 
         // Print formatted report as table
@@ -225,19 +223,19 @@ public class Main {
         ));
 
         userColumns.addAll(metadataColumns);
-//        quizColumns.addAll(metadataColumns);
-//        questionColumns.addAll(metadataColumns);
-//        answerColumns.addAll(metadataColumns);
+        quizColumns.addAll(metadataColumns);
+        questionColumns.addAll(metadataColumns);
+        answerColumns.addAll(metadataColumns);
 
         String userReport = PrintUtil.formatTable(userColumns, userService.getAllUsers(), "Users List:");
-//        String quizReport = PrintUtil.formatTable(quizColumns, quizRepository.findAll(), "Quizes List:");
-//        String questionReport = PrintUtil.formatTable(questionColumns, questionRepository.findAll(), "Questions List:");
-//        String answerReport = PrintUtil.formatTable(answerColumns, answerRepository.findAll(), "Answers List:");
+        String quizReport = PrintUtil.formatTable(quizColumns, quizRepository.findAll(), "Quizes List:");
+        String questionReport = PrintUtil.formatTable(questionColumns, questionRepository.findAll(), "Questions List:");
+        String answerReport = PrintUtil.formatTable(answerColumns, answerRepository.findAll(), "Answers List:");
 
         System.out.println(userReport);
-//        System.out.println(quizReport);
-//        System.out.println(questionReport);
-//        System.out.println(answerReport);
+        System.out.println(quizReport);
+        System.out.println(questionReport);
+        System.out.println(answerReport);
 
 
         // Menu

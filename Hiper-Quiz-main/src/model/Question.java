@@ -69,7 +69,7 @@ public class Question extends AbstractEntity<Long, Quiz> {
         sb.append("quiz='").append(quiz).append('\'');
         sb.append(", text='").append(text).append('\'');
         sb.append(", picture='").append(picture).append('\'');
-        sb.append(", answers=").append(answers);
+//        sb.append(", answers=").append(answers);
         sb.append('}');
         return sb.toString();
     }
