@@ -31,7 +31,7 @@ public class Administrator extends User{
         sb.append(", picture='").append(getPicture()).append('\'');
         sb.append(", description='").append(getDescription()).append('\'');
         sb.append(", metadata='").append(getMetadata()).append('\'');
-        sb.append(", status=").append(isStatus());
+        sb.append(", status=").append(getStatus());
         sb.append(", quizzes=").append(getQuizzes());
         sb.append('}');
         return sb.toString();

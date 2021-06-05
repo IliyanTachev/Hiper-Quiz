@@ -12,5 +12,5 @@ public interface UserService {
     List<User> getAllUsers();
     User deleteUser(long id) throws EntityNotFoundException;
     User updateUser(User user) throws EntityNotFoundException;
-    Optional<User> findUserById(Long id);
+    Optional<User> getUserById(Long id);
 }

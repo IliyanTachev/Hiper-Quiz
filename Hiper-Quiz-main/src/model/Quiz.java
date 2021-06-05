@@ -104,4 +104,12 @@ public class Quiz extends AbstractEntity<Long, Quiz> {
         this.questions.add(question);
         return question;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("id=").append(getId());
+        sb.append('}');
+        return sb.toString();
+    }
 }

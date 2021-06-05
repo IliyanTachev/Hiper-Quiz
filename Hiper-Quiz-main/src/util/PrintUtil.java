@@ -68,9 +68,11 @@ public class PrintUtil {
                     } else if(value instanceof Date){
                         value = sdf.format(value);
                     }
+                    if(value != null)
+                    if(value == null) value = "";
                     appendStringAligned(sb, value.toString(), c.width, c.alignment);
                 } catch (NoSuchMethodException| IllegalAccessException | InvocationTargetException | NullPointerException  e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     appendStringAligned(sb, "-", c.width, CENTER);
                 }
                 sb.append(" | ");

@@ -25,20 +25,11 @@ public class Main {
 
         // Create Users
         User[] users = {
-                new User("iliqn@gmail.com", "iliqn123", "12345", Gender.MALE, true),
-                new User("maria40@gmail.com", "maria45", "dfjkgd", Gender.FEMALE, true),
-                new User("mitko@gmail.com", "mitko_nik", "nik_mitko-1234", Gender.MALE, true),
-                new User("peshkoeqk", "petshko@gamil.com", "ot1do9", Gender.MALE, "snimka url", "description is here", "metadata for all", true)
+                new User("iliqn@gmail.com", "iliqn123", "12345", Gender.MALE),
+                new User("maria40@gmail.com", "maria45", "dfjkgd", Gender.FEMALE),
+                new User("mitko@gmail.com", "mitko_nik", "nik_mitko-1234", Gender.MALE),
+                new User("peshkoeqk", "petshko@gamil.com", "ot1do9", Gender.MALE)
         };
-
-        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
-        Arrays.asList(users).stream().forEach(u -> {
-            try {
-                userService.createUser(u);
-            } catch (EntityAlreadyExistsException e) {
-                e.printStackTrace();
-            }
-        });
 
         // Create Quizzes
         Quiz[] quizzes = {
@@ -130,6 +121,19 @@ public class Main {
         quizzes[1].setQuestions(Arrays.asList(questionsAboutBulgarianPresidents)); // Quiz about Bulgarian presidents
         quizzes[2].setQuestions(Arrays.asList(questionsAboutRussianPresidents)); // Quiz about Russian presidents
 
+        users[0].addQuiz(quizzes[0]);
+        users[1].addQuiz(quizzes[1]);
+        users[2].addQuiz(quizzes[2]);
+
+        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
+        Arrays.asList(users).stream().forEach(u -> {
+            try {
+                userService.createUser(u);
+            } catch (EntityAlreadyExistsException e) {
+                e.printStackTrace();
+            }
+        });
+
         // Saving quizzes
         QuizRepository quizRepository = new QuizRepositoryInMemoryImpl(new LongKeyGenerator());
         Arrays.asList(quizzes).stream().forEach(quiz -> {
@@ -166,10 +170,12 @@ public class Main {
             }
         }
 
+        System.out.println(users[0]);
+
         // Common entity metadata column descriptors
         List<PrintUtil.ColumnDescriptor> metadataColumns = List.of(
                 new PrintUtil.ColumnDescriptor("created", "Created", 19, CENTER),
-                new PrintUtil.ColumnDescriptor("updated", "Updated", 19, CENTER)
+                new PrintUtil.ColumnDescriptor("modified", "Modified", 19, CENTER)
         );
 
         // Print formatted report as table
@@ -177,7 +183,7 @@ public class Main {
                 new PrintUtil.ColumnDescriptor("id", "ID", 5, RIGHT),
                 new PrintUtil.ColumnDescriptor("username", "Username", 12, LEFT),
                 new PrintUtil.ColumnDescriptor("email", "Email", 15, LEFT),
-                new PrintUtil.ColumnDescriptor("password ", "Password", 12, LEFT),
+                new PrintUtil.ColumnDescriptor("password", "Password", 12, LEFT),
                 new PrintUtil.ColumnDescriptor("gender", "Gender", 6, RIGHT, 2),
                 new PrintUtil.ColumnDescriptor("role", "Role", 13, CENTER),
                 new PrintUtil.ColumnDescriptor("picture", "Picture", 12, CENTER),
@@ -185,7 +191,6 @@ public class Main {
                 new PrintUtil.ColumnDescriptor("metadata", "Metadata ", 12, CENTER),
                 new PrintUtil.ColumnDescriptor("status", "Status", 6, CENTER),
                 new PrintUtil.ColumnDescriptor("quizzes", "Quizzes", 20, CENTER)
-
         ));
 
         // Print formatted report as table
@@ -220,16 +225,16 @@ public class Main {
         ));
 
         userColumns.addAll(metadataColumns);
-        quizColumns.addAll(metadataColumns);
-        questionColumns.addAll(metadataColumns);
-        answerColumns.addAll(metadataColumns);
+//        quizColumns.addAll(metadataColumns);
+//        questionColumns.addAll(metadataColumns);
+//        answerColumns.addAll(metadataColumns);
 
-//        String userReport = PrintUtil.formatTable(userColumns, userService.getAllUsers(), "Users List:");
+        String userReport = PrintUtil.formatTable(userColumns, userService.getAllUsers(), "Users List:");
 //        String quizReport = PrintUtil.formatTable(quizColumns, quizRepository.findAll(), "Quizes List:");
 //        String questionReport = PrintUtil.formatTable(questionColumns, questionRepository.findAll(), "Questions List:");
 //        String answerReport = PrintUtil.formatTable(answerColumns, answerRepository.findAll(), "Answers List:");
 
-//        System.out.println(userReport);
+        System.out.println(userReport);
 //        System.out.println(quizReport);
 //        System.out.println(questionReport);
 //        System.out.println(answerReport);
@@ -238,6 +243,7 @@ public class Main {
         // Menu
         InputReader consoleReader = new ConsoleReader();
         while(true){
+            Long userId;
             printMenuOptions();
             // Switch by commandId
             switch(consoleReader.readInput()){
@@ -246,12 +252,15 @@ public class Main {
                     userService.createUser(user);
                     break;
                 case 2:
-                    userService.getAllUsers().forEach(u -> System.out.println(u.toString()));
+                    System.out.println("Enter ID: ");
+                    userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+                    Optional<User> userFound = userService.getUserById(userId);
+                    if(userFound.isPresent()) System.out.println(userFound.toString());
                     break;
                 case 3:
                     while(true){
                         System.out.println("Enter ID: ");
-                        Long userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+                        userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
                         User fetchedUser = consoleReader.readUserDetails();
                         fetchedUser.setId(userId);
                         try {
@@ -264,13 +273,16 @@ public class Main {
                 case 4:
                     while(true){
                         System.out.println("Enter ID: ");
-                        Long userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+                        userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
                         try {
                             userService.deleteUser(userId);
                             break;
                         } catch (EntityNotFoundException ignored) {
                         }
                     }
+                    break;
+                case 5:
+                    userService.getAllUsers().forEach(u -> System.out.println(u.toString()));
                     break;
             };
         }
@@ -280,8 +292,9 @@ public class Main {
         System.out.println("Choose command:");
         System.out.println("-----------------------");
         System.out.println("1. Create User");
-        System.out.println("2. List Users");
+        System.out.println("2. Read User");
         System.out.println("3. Update User");
         System.out.println("4. Delete User");
+        System.out.println("5. List Users");
     }
 }

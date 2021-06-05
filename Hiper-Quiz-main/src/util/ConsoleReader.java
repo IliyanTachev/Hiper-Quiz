@@ -1,5 +1,6 @@
 package util;
 
+import model.Gender;
 import model.User;
 
 import java.util.Scanner;
@@ -12,13 +13,13 @@ public class ConsoleReader implements InputReader{
         return scanner.nextInt();
     }
     public User readUserDetails(){
-            String username = null;
-            String email = null;
-            String password = null;
-            String gender = null;
-            String description = null;
-            String metadata = null;
-            String picture = null;
+            String username;
+            String email;
+            String password;
+            Gender gender = null;
+            String description;
+            String metadata;
+            String picture;
 
         do {
             System.out.print("Username: ");
@@ -35,10 +36,16 @@ public class ConsoleReader implements InputReader{
             password = scanner.next();
         } while(!isValidPassword(password));
 
+        String genderStr;
         do {
             System.out.print("Gender (MALE/FEMALE): ");
-            gender = scanner.next();
-        } while(!gender.equals("MALE") && !gender.equals("FEMALE"));
+            genderStr = scanner.next();
+            for(Gender v : Gender.values()){
+                if(v.toString().equals(genderStr)) {
+                    gender = v;
+                }
+            }
+        } while(!genderStr.equals("MALE") && !genderStr.equals("FEMALE"));
 
         do {
             System.out.print("Description: ");
@@ -53,12 +60,9 @@ public class ConsoleReader implements InputReader{
             metadata = scanner.next();
         } while(metadata.length() < 0 || metadata.length() > 512);
 
-        do {
-            System.out.print("Status: ");
-            gender = scanner.next();
-        } while(!gender.equals("true") && !gender.equals("false"));
-
-        return new User(username, email, password, gender, description, metadata, picture);
+        User createdUser = new User(username, email, password, gender, picture, description, metadata);
+        System.out.println(createdUser);
+        return createdUser;
     }
 
     public boolean isValidEmail(String email)
@@ -75,7 +79,7 @@ public class ConsoleReader implements InputReader{
     }
 
     public boolean isValidPassword(String password){
-        String passwordRegex = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}]:;<>,.?/~_+-=|\\]).{8,15}$";
+        String passwordRegex = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}]:;<>,.?/~_+-=|).{8,32}$";
         Pattern pattern = Pattern.compile(passwordRegex);
         if (password == null)
             return false;

@@ -14,33 +14,38 @@ public class User extends AbstractEntity<Long, User> {
     private String picture;                   // f the user (optional) - valid URL, if missing should ne substituted with an avatar according to the gender;
     private String description;               // optional) - string 20 - 250 characters long;
     private String metadata;                  // optional) - string up to 512 characters long, visible and editable only by Administrators;
-    private boolean status;                   //  boolean - validity status of the user account;
+    private boolean status = true;                   //  boolean - validity status of the user account;
     private List<Quiz> quizzes = new ArrayList<>(); //  list of all Quizzes created by the current User;
 
     public User() {
     }
 
-    public User(String email, String username, String password, Gender gender, boolean status) {
+    public User(String email, String username, String password, Gender gender) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.gender = gender;
-        this.status = status;
     }
 
-    public User(String username, String email, String password, Gender gender, String picture, String description, String metadata, boolean status) {
-        this.email = email;
+    public User(String username, String email, String password, Gender gender, String picture, String description, String metadata) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.gender = gender;
         this.picture = picture;
         this.description = description;
         this.metadata = metadata;
-        this.status = status;
     }
 
-    public User(String username, String email, String password, String gender, String description, String metadata, String picture) {
-        super();
+    public User( String username, String email, String password, Gender gender, Role role, String picture, String description, String metadata) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.role = role;
+        this.picture = picture;
+        this.description = description;
+        this.metadata = metadata;
     }
 
     public String getEmail() {
@@ -107,7 +112,7 @@ public class User extends AbstractEntity<Long, User> {
         this.metadata = metadata;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -121,6 +126,10 @@ public class User extends AbstractEntity<Long, User> {
 
     public void setQuizzes(List<Quiz> quizzes) {
         this.quizzes = quizzes;
+    }
+
+    public void addQuiz(Quiz quiz){
+        this.quizzes.add(quiz);
     }
 
     @Override

@@ -6,8 +6,8 @@ import java.util.Date;
 
 public class AbstractEntity<K extends Comparable<K>, V extends Identifiable<K>> implements Identifiable<K>, Comparable<V>{
     private K id;
-    private Date created;
-    private Date modified;
+    private Date created = new Date();
+    private Date modified = new Date();
 
     @Override
     public K getId() {
