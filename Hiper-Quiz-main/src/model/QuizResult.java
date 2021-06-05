@@ -1,6 +1,6 @@
 package model;
 
-public class QuizResult {
+public class QuizResult implements Identifiable<Long> {
     private User player;  // the reference to the User (Player) taking the 'Quiz;
     private Quiz quiz;    // reference to the Quiz taken;
     private int score;   // integer number (sum of Answer scores for all answered questions);

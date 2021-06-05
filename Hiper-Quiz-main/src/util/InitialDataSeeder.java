@@ -121,7 +121,7 @@ public class InitialDataSeeder {
         UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
         Arrays.asList(SAMPLE_USERS).stream().forEach(u -> {
             try {
-                userService.createUser(u);
+                userService.create(u);
             } catch (EntityAlreadyExistsException e) {
                 e.printStackTrace();
             }

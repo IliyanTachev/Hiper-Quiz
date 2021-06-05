@@ -1,4 +1,6 @@
 package services;
 
-public class QuizResultService {
+import model.QuizResult;
+
+public interface QuizResultService extends Service<Long, QuizResult>{
 }
