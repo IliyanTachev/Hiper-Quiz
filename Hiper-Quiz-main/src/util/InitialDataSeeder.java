@@ -6,6 +6,9 @@ import dao.QuizRepository;
 import dao.impl.*;
 import exception.EntityAlreadyExistsException;
 import model.*;
+import services.AnswerService;
+import services.QuestionService;
+import services.QuizService;
 import services.UserService;
 import services.impl.UserServiceImpl;
 
@@ -105,7 +108,30 @@ public class InitialDataSeeder {
             new QuizResult(SAMPLE_USERS[3], SAMPLE_QUIZZES[0], 2)
     };
 
+    private UserService userService;
+    private QuizService quizService;
+    private QuestionService questionService;
+    private AnswerService answerService;
+
+    public InitialDataSeeder(UserService userService, QuizService quizService, QuestionService questionService, AnswerService answerService) {
+        this.userService = userService;
+        this.quizService = quizService;
+        this.questionService = questionService;
+        this.answerService = answerService;
+    }
+
     public void seedData(){
+        // Set Answers for every Question
+        SAMPLE_QUESTIONS_QUIZ_1[0].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_1_QUESTION_1)); // Quiz 1 -> Question 1
+        SAMPLE_QUESTIONS_QUIZ_1[1].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_1_QUESTION_2)); // Quiz 1 -> Question 2
+        SAMPLE_QUESTIONS_QUIZ_2[0].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_2_QUESTION_1)); // Quiz 2 -> Question 1
+        SAMPLE_QUESTIONS_QUIZ_2[1].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_2_QUESTION_2)); // Quiz 2 -> Question 2
+        SAMPLE_QUESTIONS_QUIZ_2[2].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_2_QUESTION_3)); // Quiz 2 -> Question 3
+        SAMPLE_QUESTIONS_QUIZ_2[3].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_2_QUESTION_4)); // Quiz 2 -> Question 4
+        SAMPLE_QUESTIONS_QUIZ_3[0].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_3_QUESTION_1)); // Quiz 3 -> Question 1
+        SAMPLE_QUESTIONS_QUIZ_3[1].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_3_QUESTION_2)); // Quiz 3 -> Question 2
+        SAMPLE_QUESTIONS_QUIZ_3[2].setAnswers(Arrays.asList(SAMPLE_ANSWERS_QUIZ_3_QUESTION_3)); // Quiz 3 -> Question 3
+
         // Set Questions for every Quiz
         SAMPLE_QUIZZES[0].setQuestions(Arrays.asList(SAMPLE_QUESTIONS_QUIZ_1)); // Quiz about USA presidents
         SAMPLE_QUIZZES[1].setQuestions(Arrays.asList(SAMPLE_QUESTIONS_QUIZ_2)); // Quiz about Bulgarian presidents
@@ -118,7 +144,6 @@ public class InitialDataSeeder {
 
         // <-- Saving entities (Persistence) -->
         // Saving users
-        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
         Arrays.asList(SAMPLE_USERS).stream().forEach(u -> {
             try {
                 userService.create(u);
@@ -128,21 +153,19 @@ public class InitialDataSeeder {
         });
 
         // Saving quizzes
-        QuizRepository quizRepository = new QuizRepositoryInMemoryImpl(new LongKeyGenerator());
         Arrays.asList(SAMPLE_QUIZZES).stream().forEach(quiz -> {
             try {
-                quizRepository.create(quiz);
+                quizService.create(quiz);
             } catch (EntityAlreadyExistsException e) {
                 e.printStackTrace();
             }
         });
 
         // Saving questions
-        QuestionRepository questionRepository = new QuestionRepositoryInMemoryImpl(new LongKeyGenerator());
         for(Quiz quiz : SAMPLE_QUIZZES){
             for(Question question : quiz.getQuestions()){
                 try {
-                    questionRepository.create(question);
+                    questionService.create(question);
                 } catch (EntityAlreadyExistsException e) {
                     e.printStackTrace();
                 }
@@ -150,12 +173,11 @@ public class InitialDataSeeder {
         }
 
         // Saving answers
-        AnswerRepository answerRepository = new AnswerRepositoryInMemoryImpl(new LongKeyGenerator());
         for(Quiz quiz : SAMPLE_QUIZZES){
             for(Question question : quiz.getQuestions()){
                 for(Answer answer : question.getAnswers()) {
                     try {
-                        answerRepository.create(answer);
+                        answerService.create(answer);
                     } catch (EntityAlreadyExistsException e) {
                         e.printStackTrace();
                     }

@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.tools.javac.Main;
 import dao.AnswerRepository;
 import dao.QuestionRepository;
 import dao.QuizRepository;
@@ -8,23 +9,32 @@ import dao.impl.*;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.*;
+import services.AnswerService;
+import services.QuestionService;
+import services.QuizService;
 import services.UserService;
+import services.impl.AnswerServiceImpl;
+import services.impl.QuestionServiceImpl;
+import services.impl.QuizServiceImpl;
 import services.impl.UserServiceImpl;
-import util.ConsoleReader;
-import util.InputReader;
-import util.PrintUtil;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static util.Alignment.*;
-
+import util.InitialDataSeeder;
+import view.Command;
+import view.MainMenu;
 public class Controller {
 
     public static void main(String[] args) throws EntityAlreadyExistsException {
+        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
+        QuizService quizService = new QuizServiceImpl(new QuizRepositoryInMemoryImpl(new LongKeyGenerator()));
+        QuestionService questionService = new QuestionServiceImpl(new QuestionRepositoryInMemoryImpl(new LongKeyGenerator()));
+        AnswerService answerService = new AnswerServiceImpl(new AnswerRepositoryInMemoryImpl(new LongKeyGenerator()));
+
+        InitialDataSeeder dataSeeder = new InitialDataSeeder(userService, quizService, questionService, answerService);
+        dataSeeder.seedData();
+
+        CommandRegister commandRegister = new CommandRegister(userService, quizService, questionService, answerService);
+        MainMenu mainMenu = new MainMenu(commandRegister, System.in);
+        mainMenu.start();
+
 
         // PRINTING
         // Common entity metadata column descriptors
@@ -96,60 +106,61 @@ public class Controller {
 
 
         // Menu
-        InputReader consoleReader = new ConsoleReader();
-        while(true){
-            Long userId;
-            printMenuOptions();
-            // Switch by commandId
-            switch(consoleReader.readInput()){
-                case 1:
-                    User user = consoleReader.readUserDetails();
-                    userService.createUser(user);
-                    break;
-                case 2:
-                    System.out.println("Enter ID: ");
-                    userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
-                    Optional<User> userFound = userService.getUserById(userId);
-                    if(userFound.isPresent()) System.out.println(userFound.toString());
-                    break;
-                case 3:
-                    while(true){
-                        System.out.println("Enter ID: ");
-                        userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
-                        User fetchedUser = consoleReader.readUserDetails();
-                        fetchedUser.setId(userId);
-                        try {
-                            userService.updateUser(fetchedUser);
-                            break;
-                        } catch (EntityNotFoundException ignored) {
-                        }
-                    }
-                    break;
-                case 4:
-                    while(true){
-                        System.out.println("Enter ID: ");
-                        userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
-                        try {
-                            userService.deleteUser(userId);
-                            break;
-                        } catch (EntityNotFoundException ignored) {
-                        }
-                    }
-                    break;
-                case 5:
-                    userService.getAllUsers().forEach(u -> System.out.println(u.toString()));
-                    break;
-            };
-        }
-    }
-
-    private static void printMenuOptions(){
-        System.out.println("Choose command:");
-        System.out.println("-----------------------");
-        System.out.println("1. Create User");
-        System.out.println("2. Read User");
-        System.out.println("3. Update User");
-        System.out.println("4. Delete User");
-        System.out.println("5. List Users");
+//        InputReader consoleReader = new ConsoleReader();
+//        while(true){
+//            Long userId;
+//            printMenuOptions();
+//            // Switch by commandId
+//            switch(consoleReader.readInput()){
+//                case 1:
+//                    User user = consoleReader.readUserDetails();
+//                    userService.createUser(user);
+//                    break;
+//                case 2:
+//                    System.out.println("Enter ID: ");
+//                    userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+//                    Optional<User> userFound = userService.getUserById(userId);
+//                    if(userFound.isPresent()) System.out.println(userFound.toString());
+//                    break;
+//                case 3:
+//                    while(true){
+//                        System.out.println("Enter ID: ");
+//                        userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+//                        User fetchedUser = consoleReader.readUserDetails();
+//                        fetchedUser.setId(userId);
+//                        try {
+//                            userService.updateUser(fetchedUser);
+//                            break;
+//                        } catch (EntityNotFoundException ignored) {
+//                        }
+//                    }
+//                    break;
+//                case 4:
+//                    while(true){
+//                        System.out.println("Enter ID: ");
+//                        userId = ((ConsoleReader)consoleReader).getScanner().nextLong();
+//                        try {
+//                            userService.deleteUser(userId);
+//                            break;
+//                        } catch (EntityNotFoundException ignored) {
+//                        }
+//                    }
+//                    break;
+//                case 5:
+//                    userService.getAllUsers().forEach(u -> System.out.println(u.toString()));
+//                    break;
+//            };
+//        }
+//    }
+//
+//    private static void printMenuOptions(){
+//        System.out.println("Choose command:");
+//        System.out.println("-----------------------");
+//        System.out.println("1. Create User");
+//        System.out.println("2. Read User");
+//        System.out.println("3. Update User");
+//        System.out.println("4. Delete User");
+//        System.out.println("5. List Users");
+//    }
     }
 }

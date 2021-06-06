@@ -1,6 +1,8 @@
 package model;
 
-public class QuizResult implements Identifiable<Long> {
+import dao.AbstractEntity;
+
+public class QuizResult extends AbstractEntity<Long, QuizResult> {
     private User player;  // the reference to the User (Player) taking the 'Quiz;
     private Quiz quiz;    // reference to the Quiz taken;
     private int score;   // integer number (sum of Answer scores for all answered questions);
