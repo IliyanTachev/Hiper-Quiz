@@ -32,16 +32,10 @@ public class OutputUtils {
     ));
 
     public static String printAllUsers(List<User> users){
-        String result = "";
-        for(User user : users) {
-            result += printUser(user);
-        }
-
-        return result;
+        String userReport = PrintUtil.formatTable(userColumns, users, "Users List:");
+        return userReport;
     }
     public static String printUser(User user){
-        userColumns.addAll(metadataColumns);
-        String userReport = PrintUtil.formatTable(userColumns, List.of(user), "Users List:");
-        return userReport;
+       return printAllUsers(List.of(user));
     }
 }

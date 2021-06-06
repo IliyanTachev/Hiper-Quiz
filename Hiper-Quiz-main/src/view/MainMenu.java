@@ -4,6 +4,8 @@ import controller.CommandRegister;
 import dao.impl.LongKeyGenerator;
 import dao.impl.UserRepositoryInMemoryImpl;
 import exception.EntityAlreadyExistsException;
+import exception.EntityNotFoundException;
+import model.LoginUser;
 import model.User;
 import services.AnswerService;
 import services.QuestionService;
@@ -20,8 +22,15 @@ import static view.MenuCommand.*;
 
 public class MainMenu {
     private final Scanner in;
-    private static final String[] menuItemStrings = {
+    private static final String[] menuItemStringsWithNoLoggedUser = {
             "EXIT from this program = EXIT",
+            "Log in = LOGIN_USER",
+            "Register = REGISTER_USER",
+    };
+
+    private static final String[] menuItemStringsWithLoggedUser = {
+            "EXIT from this program = EXIT",
+            "LOGOUT = LOGOUT_USER",
             "Add user = ADD_USER",
             "Edit user = EDIT_USER",
             "View user = VIEW_USER",
@@ -35,7 +44,7 @@ public class MainMenu {
         this.commandRegister = commandRegister;
         this.in = new Scanner(inputStream);
         // Load menuItems
-        Arrays.stream(menuItemStrings).forEach(menuItemStringLine -> menuItems.add(parseMenuItemString(menuItemStringLine)));
+        loadMenuItems(menuItemStringsWithNoLoggedUser);
 
        // EXIT, LOGIN, REGISTER, ADD_USER, VIEW_USER, EDIT_USER, DELETE_USER, LIST_ALL_USERS
         // Load commands
@@ -47,19 +56,64 @@ public class MainMenu {
             }
         });
 
-        commands.put(LOGIN, new Command() {
+        commands.put(LOGIN_USER, new Command() {
             @Override
             public boolean execute() {
-                System.exit(0);
+                LoginUser loginUserDetails = InputUtils.inputLoginUser(in);
+                try {
+                    User loggedUser = commandRegister.loginUser(loginUserDetails);
+                    System.out.println("Successfully logged as " + loggedUser.getUsername());
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    loadMenuItems(menuItemStringsWithLoggedUser);
+                    return true;
+                } catch (EntityNotFoundException e) {
+                    System.err.println(e.getMessage());
+                }
                 return true;
             }
         });
 
-        commands.put(REGISTER, new Command() {
+        commands.put(LOGOUT_USER, new Command() {
             @Override
             public boolean execute() {
-                System.exit(0);
-                return true;
+                if(commandRegister.logoutUser() == null){
+                    loadMenuItems(menuItemStringsWithNoLoggedUser);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        commands.put(REGISTER_USER, new Command() {
+            @Override
+            public boolean execute() {
+                try {
+                    User registeredUser = commandRegister.registerUser(InputUtils.inputUser(in));
+                    System.out.println("User was registered successfully.");
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Successfully logged as " + registeredUser.getUsername());
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    loadMenuItems(menuItemStringsWithLoggedUser);
+                    return true;
+                } catch (EntityAlreadyExistsException e) {
+                    // e.printStackTrace();
+                    System.err.println("[ERROR] User is already registered.");
+                } catch (EntityNotFoundException e) {
+                    System.err.println("[ERROR] Registration process failed.");
+                }
+                return false;
             }
         });
 
@@ -141,18 +195,16 @@ public class MainMenu {
             commands.get(menuItems.get(commandId - 1).getMenuCommand()).execute();
 
             // Clear console
-            try {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     private MenuItem parseMenuItemString(String menuItemString){
         String[] parsedMenuItem = menuItemString.split("=");
         return new MenuItem(parsedMenuItem[0].trim(), MenuCommand.valueOf(parsedMenuItem[1].trim()));
+    }
+
+    private void loadMenuItems(String[] menuItemStrings){
+        menuItems.clear();
+        Arrays.stream(menuItemStrings).forEach(menuItemStringLine -> menuItems.add(parseMenuItemString(menuItemStringLine)));
     }
 }

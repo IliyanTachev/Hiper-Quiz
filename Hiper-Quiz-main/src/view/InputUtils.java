@@ -1,6 +1,7 @@
 package view;
 
 import model.Gender;
+import model.LoginUser;
 import model.User;
 
 import java.util.Scanner;
@@ -52,6 +53,23 @@ public class InputUtils {
 
         User createdUser = new User(username, email, password, Gender.valueOf(gender), picture, description, metadata);
         return createdUser;
+    }
+
+    public static LoginUser inputLoginUser(Scanner in){
+        String username;
+        String password;
+
+        do {
+            System.out.print("Enter username: ");
+            username = in.next();
+        } while(username.length() < 2 || username.length() > 15);
+
+        do {
+            System.out.print("Enter password: ");
+            password = in.next();
+        } while(!isValidPassword(password));
+
+        return new LoginUser(username, password);
     }
 
     private static boolean isValidEmail(String email)

@@ -1,6 +1,8 @@
 package controller;
 
 import exception.EntityAlreadyExistsException;
+import exception.EntityNotFoundException;
+import model.LoginUser;
 import model.User;
 import services.AnswerService;
 import services.QuestionService;
@@ -33,5 +35,18 @@ public class CommandRegister {
 
     public Optional<User> getUserById(Long id){
         return userService.read(id);
+    }
+
+    public User registerUser(User user) throws EntityAlreadyExistsException, EntityNotFoundException {
+       User registeredUser = createUser(user); // registeredUser
+       return userService.login(new LoginUser(registeredUser.getUsername(), registeredUser.getPassword()));
+    }
+
+    public User loginUser(LoginUser loginUser) throws EntityNotFoundException {
+        return userService.login(loginUser);
+    }
+
+    public User logoutUser(){
+        return userService.logout();
     }
 }
