@@ -40,4 +40,9 @@ public class ServiceImpl<K, V extends Identifiable<K>> implements Service<K, V> 
     public List<V> getAll() {
         return repository.findAll();
     }
+
+    @Override
+    public Optional<V> getById(K id) {
+        return repository.findById(id);
+    }
 }

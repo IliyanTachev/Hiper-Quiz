@@ -1,23 +1,18 @@
 package util;
 
-import dao.AnswerRepository;
-import dao.QuestionRepository;
-import dao.QuizRepository;
-import dao.impl.*;
 import exception.EntityAlreadyExistsException;
 import model.*;
 import services.AnswerService;
 import services.QuestionService;
 import services.QuizService;
 import services.UserService;
-import services.impl.UserServiceImpl;
 
 import java.util.Arrays;
 
 public class InitialDataSeeder {
     private final User[] SAMPLE_USERS = {
             new User("iliqn@gmail.com", "iliqn123", "abcmnF$123", Gender.MALE),
-            new User("maria40@gmail.com", "maria45", "dfjkgd", Gender.FEMALE),
+            new User("maria40@gmail.com", "maria45", "dfjkgdHJ34$", Gender.FEMALE),
             new User("mitko@gmail.com", "mitko_nik", "nik_mitko-1234", Gender.MALE),
             new User("peshkoeqk", "petshko@gamil.com", "ot1do9", Gender.MALE)
     };

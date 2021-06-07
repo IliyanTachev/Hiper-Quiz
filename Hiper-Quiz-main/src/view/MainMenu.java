@@ -1,19 +1,10 @@
 package view;
 
 import controller.CommandRegister;
-import dao.impl.LongKeyGenerator;
-import dao.impl.UserRepositoryInMemoryImpl;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
-import model.LoginUser;
-import model.User;
-import services.AnswerService;
-import services.QuestionService;
-import services.QuizService;
-import services.UserService;
-import services.impl.UserServiceImpl;
+import model.*;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +25,14 @@ public class MainMenu {
             "Add user = ADD_USER",
             "Edit user = EDIT_USER",
             "View user = VIEW_USER",
-            "List all users = LIST_ALL_USERS"};
+            "List all users = LIST_ALL_USERS",
+            "Add quiz = ADD_QUIZ",
+            "Edit quiz = EDIT_QUIZ",
+            "View quiz = VIEW_QUIZ",
+            "List all quizzes = LIST_ALL_QUIZZES",
+            "List all quiz results = LIST_ALL_QUIZ_RESULTS",
+            "Play Quiz = PLAY_QUIZ"
+    };
 
     private List<MenuItem> menuItems = new ArrayList<>();
     private Map<MenuCommand, Command> commands = new EnumMap<MenuCommand, Command>(MenuCommand.class);
@@ -120,7 +118,6 @@ public class MainMenu {
         commands.put(ADD_USER, new Command() {
             @Override
             public boolean execute() {
-                System.out.println("< Enter new User details >");
                 User user = InputUtils.inputUser(in);
                 try {
                     commandRegister.createUser(user);
@@ -178,6 +175,92 @@ public class MainMenu {
                 return true;
             }
         });
+
+        commands.put(ADD_QUIZ, new Command() {
+            @Override
+            public boolean execute() {
+                Quiz quiz = InputUtils.inputQuiz(in);
+                quiz.setAuthor(commandRegister.getLoggedUser());
+                try {
+                    Quiz createdQuiz = commandRegister.createQuiz(quiz);
+                    System.out.println("Quiz(\"" + createdQuiz.getTitle() + "\") was successfully created.");
+                } catch (EntityAlreadyExistsException e) {
+//                    e.printStackTrace();
+                    System.err.println(e.getMessage());
+                }
+                return true;
+            }
+        });
+
+        commands.put(EDIT_QUIZ, new Command() {
+            @Override
+            public boolean execute() {
+                return false;
+            }
+        });
+
+        commands.put(VIEW_QUIZ, new Command() {
+            @Override
+            public boolean execute() {
+                return false;
+            }
+        });
+
+        commands.put(LIST_ALL_QUIZZES, new Command() {
+            @Override
+            public boolean execute() {
+                List<Quiz> allQuizzes =  commandRegister.getAllQuizzes();
+                System.out.println(OutputUtils.printAllQuizzes(allQuizzes));
+                return true;
+            }
+        });
+
+        commands.put(LIST_ALL_QUIZ_RESULTS, new Command() {
+            @Override
+            public boolean execute() {
+                List<QuizResult> quizResults = commandRegister.getAllQuizResults();
+                System.out.println(OutputUtils.formatAllQuizResults(quizResults));
+                return true;
+            }
+        });
+
+        commands.put(PLAY_QUIZ, new Command() {
+            @Override
+            public boolean execute() {
+                System.out.println(OutputUtils.printAllQuizzes(commandRegister.getAllQuizzes())); // Print all Quizzes
+                System.out.println("Enter Quiz ID: ");
+                Long selectedQuizId = Long.parseLong(in.nextLine());
+                Optional<Quiz> fetchedQuiz = commandRegister.getQuizById(selectedQuizId);
+                if(fetchedQuiz.isEmpty()) {
+                    System.err.println("Please enter valid Quiz ID.");
+                    return false;
+                }
+                int correctAnswersCounter = 0;
+                int correctAnswersTotalScore = 0;
+                List<Long> correctAnswersAssumptionIds = InputUtils.inputQuizGame(in, fetchedQuiz.get());
+                for(Long answerId : correctAnswersAssumptionIds){
+                    int answerScore = commandRegister.getAnswerById(answerId).get().getScore();
+                    if(answerScore > 0) {
+                        correctAnswersCounter++;
+                        correctAnswersTotalScore += answerScore;
+                    }
+                }
+
+                User loggedUser = commandRegister.getLoggedUser();
+                QuizResult result = new QuizResult(loggedUser, fetchedQuiz.get(), correctAnswersTotalScore);
+                if(loggedUser instanceof Player) ((Player) loggedUser).addResult(result);
+
+                try {
+                    commandRegister.createQuizResult(result);
+                } catch (EntityAlreadyExistsException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(String.format("You scored %d / %d correct answers.", correctAnswersCounter, fetchedQuiz.get().getQuestionsSize()));
+                System.out.println(OutputUtils.formatQuizResult(result));
+                return true;
+            }
+        });
+
     }
 
     public void start(){
@@ -191,7 +274,7 @@ public class MainMenu {
             }
 
             System.out.println("Enter commandId: ");
-            int commandId = in.nextInt();
+            int commandId = Integer.parseInt(in.nextLine().trim());
             commands.get(menuItems.get(commandId - 1).getMenuCommand()).execute();
 
             // Clear console

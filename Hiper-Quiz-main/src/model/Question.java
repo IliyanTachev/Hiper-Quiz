@@ -19,6 +19,12 @@ public class Question extends AbstractEntity<Long, Quiz> {
         this.answers = answers;
     }
 
+    public Question(Quiz quiz, String text, String picture) {
+        this.quiz = quiz;
+        this.text = text;
+        this.picture = picture;
+    }
+
     public Question(Quiz quiz, String text, String picture, List<Answer> answers) {
         this.quiz = quiz;
         this.text = text;

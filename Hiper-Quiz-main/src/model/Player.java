@@ -34,6 +34,11 @@ public class Player extends User{
         return Rank.SENIOR;
     }
 
+    public QuizResult addResult(QuizResult quizResult){
+        results.add(quizResult);
+        return quizResult;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Player{");

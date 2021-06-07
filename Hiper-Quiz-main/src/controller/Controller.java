@@ -9,14 +9,8 @@ import dao.impl.*;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.*;
-import services.AnswerService;
-import services.QuestionService;
-import services.QuizService;
-import services.UserService;
-import services.impl.AnswerServiceImpl;
-import services.impl.QuestionServiceImpl;
-import services.impl.QuizServiceImpl;
-import services.impl.UserServiceImpl;
+import services.*;
+import services.impl.*;
 import util.InitialDataSeeder;
 import view.Command;
 import view.MainMenu;
@@ -27,11 +21,12 @@ public class Controller {
         QuizService quizService = new QuizServiceImpl(new QuizRepositoryInMemoryImpl(new LongKeyGenerator()));
         QuestionService questionService = new QuestionServiceImpl(new QuestionRepositoryInMemoryImpl(new LongKeyGenerator()));
         AnswerService answerService = new AnswerServiceImpl(new AnswerRepositoryInMemoryImpl(new LongKeyGenerator()));
+        QuizResultService quizResultService = new QuizResultServiceImpl(new QuizResultRepositoryInMemoryImpl(new LongKeyGenerator()));
 
         InitialDataSeeder dataSeeder = new InitialDataSeeder(userService, quizService, questionService, answerService);
         dataSeeder.seedData();
 
-        CommandRegister commandRegister = new CommandRegister(userService, quizService, questionService, answerService);
+        CommandRegister commandRegister = new CommandRegister(userService, quizService, questionService, answerService, quizResultService);
         MainMenu mainMenu = new MainMenu(commandRegister, System.in);
         mainMenu.start();
     }

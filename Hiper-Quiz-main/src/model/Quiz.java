@@ -17,9 +17,8 @@ public class Quiz extends AbstractEntity<Long, Quiz> {
     public Quiz() {
     }
 
-    public Quiz(String title, User author, String description, int expectedDuration, String picture, String tags) {
+    public Quiz(String title, String description, int expectedDuration, String picture, String tags) {
         this.title = title;
-        this.author = author;
         this.description = description;
         this.expectedDuration = expectedDuration;
         this.picture = picture;
@@ -103,6 +102,10 @@ public class Quiz extends AbstractEntity<Long, Quiz> {
     public Question addQuestion(Question question){
         this.questions.add(question);
         return question;
+    }
+
+    public int getQuestionsSize(){
+        return questions.size();
     }
 
     @Override

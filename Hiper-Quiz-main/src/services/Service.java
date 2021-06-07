@@ -13,4 +13,5 @@ public interface Service<K, V extends Identifiable<K>> {
     V update(V entity) throws EntityNotFoundException;
     V delete(K id) throws EntityNotFoundException;
     List<V> getAll();
+    Optional<V> getById(K id);
 }
