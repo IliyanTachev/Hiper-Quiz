@@ -1,10 +1,19 @@
 package view;
 
+import commands.LoadEntitiesCommand;
+import commands.SaveEntitiesCommand;
 import controller.CommandRegister;
+import dao.AnswerRepository;
+import dao.QuestionRepository;
+import dao.QuizRepository;
+import dao.UserRepository;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +47,17 @@ public class MainMenu {
     private Map<MenuCommand, Command> commands = new EnumMap<MenuCommand, Command>(MenuCommand.class);
     private CommandRegister commandRegister;
 
+    UserRepository userRepository;
+    QuizRepository quizRepository;
+    QuestionRepository questionRepository;
+    AnswerRepository answerRepository;
+
     public MainMenu(CommandRegister commandRegister, InputStream inputStream) {
         this.commandRegister = commandRegister;
+         userRepository = this.commandRegister.getUserRepo();
+         quizRepository = this.commandRegister.getQuizRepo();
+         questionRepository = this.commandRegister.getQuestionRepo();
+         answerRepository = this.commandRegister.getAnswerRepo();
         this.in = new Scanner(inputStream);
         // Load menuItems
         loadMenuItems(menuItemStringsWithNoLoggedUser);
@@ -49,6 +67,14 @@ public class MainMenu {
         commands.put(EXIT, new Command() {
             @Override
             public boolean execute() {
+                SaveEntitiesCommand saveCommand = null;
+                try {
+                    saveCommand = new SaveEntitiesCommand(new FileOutputStream("hiperQuiz.db"),
+                            userRepository, quizRepository, questionRepository, answerRepository);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                saveCommand.execute();
                 System.exit(0);
                 return true;
             }
@@ -264,6 +290,12 @@ public class MainMenu {
     }
 
     public void start(){
+        try {
+            LoadEntitiesCommand loadEntitiesCommand = new LoadEntitiesCommand(new FileInputStream("hiperQuiz.db"), userRepository, quizRepository, questionRepository, answerRepository);
+            loadEntitiesCommand.execute();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         while(true){
             System.out.println("           M A I N    M E N U");
             System.out.println("=========================================");

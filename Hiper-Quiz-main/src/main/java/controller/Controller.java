@@ -23,8 +23,8 @@ public class Controller {
         AnswerService answerService = new AnswerServiceImpl(new AnswerRepositoryInMemoryImpl(new LongKeyGenerator()));
         QuizResultService quizResultService = new QuizResultServiceImpl(new QuizResultRepositoryInMemoryImpl(new LongKeyGenerator()));
 
-        InitialDataSeeder dataSeeder = new InitialDataSeeder(userService, quizService, questionService, answerService);
-        dataSeeder.seedData();
+//        InitialDataSeeder dataSeeder = new InitialDataSeeder(userService, quizService, questionService, answerService);
+//        dataSeeder.seedData();
 
         CommandRegister commandRegister = new CommandRegister(userService, quizService, questionService, answerService, quizResultService);
         MainMenu mainMenu = new MainMenu(commandRegister, System.in);

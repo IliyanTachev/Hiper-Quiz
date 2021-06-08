@@ -1,5 +1,6 @@
 package services;
 
+import dao.Repository;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.Identifiable;
@@ -14,4 +15,5 @@ public interface Service<K, V extends Identifiable<K>> {
     V delete(K id) throws EntityNotFoundException;
     List<V> getAll();
     Optional<V> getById(K id);
+    Repository<K, V> getRepo();
 }

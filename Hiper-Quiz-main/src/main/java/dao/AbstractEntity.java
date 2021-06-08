@@ -2,9 +2,10 @@ package dao;
 
 import model.Identifiable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AbstractEntity<K extends Comparable<K>, V extends Identifiable<K>> implements Identifiable<K>, Comparable<V>{
+public class AbstractEntity<K extends Comparable<K>, V extends Identifiable<K>> implements Identifiable<K>, Comparable<V>, Serializable {
     private K id;
     private Date created = new Date();
     private Date modified = new Date();

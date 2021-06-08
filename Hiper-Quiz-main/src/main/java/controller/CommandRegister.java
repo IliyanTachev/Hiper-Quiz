@@ -1,5 +1,9 @@
 package controller;
 
+import dao.AnswerRepository;
+import dao.QuestionRepository;
+import dao.QuizRepository;
+import dao.UserRepository;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.*;
@@ -91,5 +95,21 @@ public class CommandRegister {
 
     public List<QuizResult> getAllQuizResults(){
         return quizResultService.getAll();
+    }
+
+    public UserRepository getUserRepo(){
+        return (UserRepository) userService.getRepo();
+    }
+
+    public QuizRepository getQuizRepo(){
+        return (QuizRepository) quizService.getRepo();
+    }
+
+    public QuestionRepository getQuestionRepo(){
+        return (QuestionRepository) questionService.getRepo();
+    }
+
+    public AnswerRepository getAnswerRepo(){
+        return (AnswerRepository) answerService.getRepo();
     }
 }

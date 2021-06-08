@@ -12,7 +12,6 @@ import java.util.Arrays;
 public class InitialDataSeeder {
     private final User[] SAMPLE_USERS = {
             new User("iliqn@gmail.com", "iliqn123", "abcmnF$123", Gender.MALE),
-            new User("maria40@gmail.com", "maria45", "dfjkgdHJ34$", Gender.FEMALE),
             new User("mitko@gmail.com", "mitko_nik", "nik_mitko-1234", Gender.MALE),
             new User("peshkoeqk", "petshko@gamil.com", "ot1do9", Gender.MALE)
     };
@@ -99,8 +98,7 @@ public class InitialDataSeeder {
             new QuizResult(SAMPLE_USERS[0], SAMPLE_QUIZZES[0], 1),
             new QuizResult(SAMPLE_USERS[0],SAMPLE_QUIZZES[2], 2),
             new QuizResult(SAMPLE_USERS[1], SAMPLE_QUIZZES[1], 3),
-            new QuizResult(SAMPLE_USERS[2], SAMPLE_QUIZZES[2], 1),
-            new QuizResult(SAMPLE_USERS[3], SAMPLE_QUIZZES[0], 2)
+            new QuizResult(SAMPLE_USERS[2], SAMPLE_QUIZZES[2], 1)
     };
 
     private UserService userService;

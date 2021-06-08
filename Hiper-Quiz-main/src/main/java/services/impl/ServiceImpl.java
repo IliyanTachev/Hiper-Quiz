@@ -45,4 +45,9 @@ public class ServiceImpl<K, V extends Identifiable<K>> implements Service<K, V> 
     public Optional<V> getById(K id) {
         return repository.findById(id);
     }
+
+    @Override
+    public Repository<K, V> getRepo() {
+        return repository.getRepository();
+    }
 }
