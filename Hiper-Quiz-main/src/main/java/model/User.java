@@ -3,6 +3,7 @@ package model;
 import dao.AbstractEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class User extends AbstractEntity<Long, User> {
@@ -46,6 +47,20 @@ public class User extends AbstractEntity<Long, User> {
         this.picture = picture;
         this.description = description;
         this.metadata = metadata;
+    }
+
+    public User(String email, String username, String password, Gender gender, Role role, String picture, String description, String metadata, Date created, Date modified, boolean status) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.role = role;
+        this.picture = picture;
+        this.description = description;
+        this.metadata = metadata;
+        this.status = status;
+        super.setCreated(created);
+        super.setModified(modified);
     }
 
     public String getEmail() {

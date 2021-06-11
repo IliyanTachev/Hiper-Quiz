@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Hiper-Quiz" />
+        <module name="Hiper-Quiz-main" />
       </profile>
     </annotationProcessing>
   </component>
