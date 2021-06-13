@@ -47,7 +47,7 @@ public class ServiceImpl<K, V extends Identifiable<K>> implements Service<K, V> 
     }
 
     @Override
-    public Repository<K, V> getRepo() {
+    public Repository<K, V> getRepository() {
         return repository.getRepository();
     }
 }

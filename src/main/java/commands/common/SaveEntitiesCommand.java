@@ -1,9 +1,6 @@
-package commands;
+package commands.common;
 
-import dao.AnswerRepository;
-import dao.QuestionRepository;
-import dao.QuizRepository;
-import dao.UserRepository;
+import dao.*;
 import model.AllCollections;
 import view.Command;
 
@@ -16,14 +13,16 @@ public class SaveEntitiesCommand implements Command {
     private QuizRepository quizRepository;
     private QuestionRepository questionRepository;
     private AnswerRepository answerRepository;
+    private QuizResultRepository quizResultRepository;
     private OutputStream out;
 
-    public SaveEntitiesCommand(OutputStream out, UserRepository userRepository, QuizRepository quizRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
+    public SaveEntitiesCommand(OutputStream out, UserRepository userRepository, QuizRepository quizRepository, QuestionRepository questionRepository, AnswerRepository answerRepository, QuizResultRepository quizResultRepository) {
         this.out = out;
         this.userRepository = userRepository;
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
+        this.quizResultRepository = quizResultRepository;
     }
 
     @Override
@@ -32,7 +31,8 @@ public class SaveEntitiesCommand implements Command {
                 userRepository.findAll(),
                 quizRepository.findAll(),
                 questionRepository.findAll(),
-                answerRepository.findAll());
+                answerRepository.findAll(),
+                quizResultRepository.findAll());
         try(ObjectOutputStream oos = new ObjectOutputStream(out)){
             oos.writeObject(allCollections);
             System.err.println("All collections saved successfully");

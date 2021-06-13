@@ -98,18 +98,18 @@ public class CommandRegister {
     }
 
     public UserRepository getUserRepo(){
-        return (UserRepository) userService.getRepo();
+        return (UserRepository) userService.getRepository();
     }
 
     public QuizRepository getQuizRepo(){
-        return (QuizRepository) quizService.getRepo();
+        return (QuizRepository) quizService.getRepository();
     }
 
     public QuestionRepository getQuestionRepo(){
-        return (QuestionRepository) questionService.getRepo();
+        return (QuestionRepository) questionService.getRepository();
     }
 
     public AnswerRepository getAnswerRepo(){
-        return (AnswerRepository) answerService.getRepo();
+        return (AnswerRepository) answerService.getRepository();
     }
 }

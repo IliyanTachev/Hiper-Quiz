@@ -1,4 +1,4 @@
-package commands;
+package commands.common;
 
 import dao.*;
 import exception.EntityAlreadyExistsException;
@@ -14,18 +14,21 @@ public class LoadEntitiesCommand implements Command {
     private QuizRepository quizRepository;
     private QuestionRepository questionRepository;
     private AnswerRepository answerRepository;
+    private QuizResultRepository quizResultRepository;
     private InputStream in;
 
     public LoadEntitiesCommand(InputStream in,
                                UserRepository userRepository,
                                QuizRepository quizRepository,
                                QuestionRepository questionRepository,
-                               AnswerRepository answerRepository
+                               AnswerRepository answerRepository,
+                               QuizResultRepository quizResultRepository
     ) {
         this.userRepository = userRepository;
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
+        this.quizResultRepository = quizResultRepository;
         this.in = in;
     }
     @Override
@@ -36,6 +39,7 @@ public class LoadEntitiesCommand implements Command {
             quizRepository.createBatch(allCollections.getQuizzes());
             questionRepository.createBatch(allCollections.getQuestions());
             answerRepository.createBatch(allCollections.getAnswers());
+            quizResultRepository.createBatch(allCollections.getQuizResults());
             System.out.println("All collections loaded successfully");
         } catch (IOException | ClassNotFoundException e) {
 //            log.error("Error reading collections from file", e);

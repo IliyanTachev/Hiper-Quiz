@@ -27,7 +27,7 @@ public class Controller {
 //        dataSeeder.seedData();
 
         CommandRegister commandRegister = new CommandRegister(userService, quizService, questionService, answerService, quizResultService);
-        MainMenu mainMenu = new MainMenu(commandRegister, System.in);
+        MainMenu mainMenu = new MainMenu(System.in, userService, quizService, questionService, answerService, quizResultService);
         mainMenu.start();
     }
 }
