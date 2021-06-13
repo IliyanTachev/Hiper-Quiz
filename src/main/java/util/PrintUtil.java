@@ -1,6 +1,9 @@
 package util;
 
 import dao.AbstractEntity;
+import model.Player;
+import model.Quiz;
+import model.User;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -65,7 +68,12 @@ public class PrintUtil {
                     Object value = accessor.invoke(item); // invoke get method using reflection
                     if(value instanceof Float || value instanceof Double){
                         value = String.format("%" + c.width + "." + c.precision + "f", value);
-                    } else if(value instanceof Date){
+                    } else if(value instanceof User){
+                        value = ((User) value).getUsername();
+                    } else if(value instanceof Quiz){
+                        value = ((Quiz) value).getTitle();
+                    }
+                    else if(value instanceof Date){
                         value = sdf.format(value);
                     }
                     if(value != null)

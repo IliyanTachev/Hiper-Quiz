@@ -1,13 +1,15 @@
 package commands.common;
 
 import dao.*;
+import dao.impl.LongKeyGenerator;
 import exception.EntityAlreadyExistsException;
-import model.AllCollections;
+import model.*;
 import view.Command;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.List;
 
 public class LoadEntitiesCommand implements Command {
     private UserRepository userRepository;
@@ -33,14 +35,34 @@ public class LoadEntitiesCommand implements Command {
     }
     @Override
     public boolean execute() {
+        List<User> users;
+        List<Quiz> quizzes;
+        List<Question> questions;
+        List<Answer> answers;
+        List<QuizResult> quizResults;
+
         try(ObjectInputStream ois = new ObjectInputStream(in)){
             AllCollections allCollections = (AllCollections) ois.readObject();
-            userRepository.createBatch(allCollections.getUsers());
-            quizRepository.createBatch(allCollections.getQuizzes());
-            questionRepository.createBatch(allCollections.getQuestions());
-            answerRepository.createBatch(allCollections.getAnswers());
-            quizResultRepository.createBatch(allCollections.getQuizResults());
+            users = allCollections.getUsers();
+            quizzes = allCollections.getQuizzes();
+            questions = allCollections.getQuestions();
+            answers = allCollections.getAnswers();
+            quizResults = allCollections.getQuizResults();
+
+            userRepository.createBatch(users);
+            quizRepository.createBatch(quizzes);
+            questionRepository.createBatch(questions);
+            answerRepository.createBatch(answers);
+            quizResultRepository.createBatch(quizResults);
+
+            userRepository.setKeyGenerator(new LongKeyGenerator(users.size()));
+            quizRepository.setKeyGenerator(new LongKeyGenerator(quizzes.size()));
+            questionRepository.setKeyGenerator(new LongKeyGenerator(questions.size()));
+            answerRepository.setKeyGenerator(new LongKeyGenerator(answers.size()));
+            quizResultRepository.setKeyGenerator(new LongKeyGenerator(quizResults.size()));
+
             System.out.println("All collections loaded successfully");
+
         } catch (IOException | ClassNotFoundException e) {
 //            log.error("Error reading collections from file", e);
             System.err.println("Error reading collections from file");

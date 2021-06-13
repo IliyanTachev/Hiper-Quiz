@@ -51,9 +51,9 @@ public class OutputUtils {
 
     private static final List<PrintUtil.ColumnDescriptor> quizResultColumns = new ArrayList<>(List.of(
             new PrintUtil.ColumnDescriptor("id", "ID", 5, RIGHT),
-            new PrintUtil.ColumnDescriptor("player", "Player", 5, CENTER),
-            new PrintUtil.ColumnDescriptor("quiz", "Quiz", 5, CENTER),
-            new PrintUtil.ColumnDescriptor("score", "Score", 12, LEFT)
+            new PrintUtil.ColumnDescriptor("player", "Player", 10, CENTER),
+            new PrintUtil.ColumnDescriptor("quiz", "Quiz", 25, CENTER),
+            new PrintUtil.ColumnDescriptor("score", "Score", 12, CENTER)
     ));
 
     private static final List<PrintUtil.ColumnDescriptor> answerColumnsPlayMode = new ArrayList<>(List.of(

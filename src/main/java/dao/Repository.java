@@ -17,4 +17,5 @@ public interface Repository<K, V extends Identifiable<K>> {
         long count();
         public int createBatch(Collection<V> entityCollection) throws EntityAlreadyExistsException;
         Repository<K, V> getRepository();
+        void setKeyGenerator(KeyGenerator<K> keyGenerator);
 }

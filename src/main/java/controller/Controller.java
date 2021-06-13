@@ -1,10 +1,8 @@
 package controller;
 
 import com.sun.tools.javac.Main;
-import dao.AnswerRepository;
-import dao.QuestionRepository;
-import dao.QuizRepository;
-import dao.UserRepository;
+import commands.common.LoadEntitiesCommand;
+import dao.*;
 import dao.impl.*;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
@@ -14,19 +12,22 @@ import services.impl.*;
 import util.InitialDataSeeder;
 import view.Command;
 import view.MainMenu;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Controller {
 
     public static void main(String[] args) throws EntityAlreadyExistsException {
-        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator()));
-        QuizService quizService = new QuizServiceImpl(new QuizRepositoryInMemoryImpl(new LongKeyGenerator()));
-        QuestionService questionService = new QuestionServiceImpl(new QuestionRepositoryInMemoryImpl(new LongKeyGenerator()));
-        AnswerService answerService = new AnswerServiceImpl(new AnswerRepositoryInMemoryImpl(new LongKeyGenerator()));
-        QuizResultService quizResultService = new QuizResultServiceImpl(new QuizResultRepositoryInMemoryImpl(new LongKeyGenerator()));
+        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator(0)));
+        QuizService quizService = new QuizServiceImpl(new QuizRepositoryInMemoryImpl(new LongKeyGenerator(0)));
+        QuestionService questionService = new QuestionServiceImpl(new QuestionRepositoryInMemoryImpl(new LongKeyGenerator(0)));
+        AnswerService answerService = new AnswerServiceImpl(new AnswerRepositoryInMemoryImpl(new LongKeyGenerator(0)));
+        QuizResultService quizResultService = new QuizResultServiceImpl(new QuizResultRepositoryInMemoryImpl(new LongKeyGenerator(0)));
 
 //        InitialDataSeeder dataSeeder = new InitialDataSeeder(userService, quizService, questionService, answerService);
 //        dataSeeder.seedData();
 
-        CommandRegister commandRegister = new CommandRegister(userService, quizService, questionService, answerService, quizResultService);
         MainMenu mainMenu = new MainMenu(System.in, userService, quizService, questionService, answerService, quizResultService);
         mainMenu.start();
     }

@@ -35,7 +35,7 @@ class RepositoryInMemoryImplTest {
     @BeforeEach
     void setUp() {
         // Before test case
-        keyGenerator = new LongKeyGenerator();
+        keyGenerator = new LongKeyGenerator(0);
         repo = new RepositoryInMemoryImpl<Long, User>(keyGenerator);
     }
 

@@ -32,7 +32,7 @@ class QuizRepositoryInMemoryImplTest {
 
     @BeforeAll
     public static void setUp(){
-        keyGenerator = new LongKeyGenerator();
+        keyGenerator = new LongKeyGenerator(0);
         repo = new QuizRepositoryInMemoryImpl(keyGenerator);
         fillInEntities();
     }

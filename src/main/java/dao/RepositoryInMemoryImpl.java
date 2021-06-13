@@ -43,6 +43,7 @@ public class RepositoryInMemoryImpl<K, V extends Identifiable<K>> implements Rep
                 }
             }
         }
+        System.out.println();
         entities.put(entity.getId(), entity);
         return entity;
     }
@@ -91,5 +92,7 @@ public class RepositoryInMemoryImpl<K, V extends Identifiable<K>> implements Rep
         return this;
     }
 
-
+    public void setKeyGenerator(KeyGenerator<K> keyGenerator) {
+        this.keyGenerator = keyGenerator;
+    }
 }
