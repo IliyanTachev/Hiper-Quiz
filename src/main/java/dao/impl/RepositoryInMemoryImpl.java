@@ -1,5 +1,7 @@
-package dao;
+package dao.impl;
 
+import dao.KeyGenerator;
+import dao.Repository;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.Identifiable;
@@ -10,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RepositoryInMemoryImpl<K, V extends Identifiable<K>> implements Repository<K, V>{
+public class RepositoryInMemoryImpl<K, V extends Identifiable<K>> implements Repository<K, V> {
     private Map<K, V> entities = new ConcurrentHashMap();
     private KeyGenerator<K> keyGenerator;
 

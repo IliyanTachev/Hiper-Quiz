@@ -1,7 +1,6 @@
 package util;
 
-import dao.AbstractEntity;
-import model.Player;
+import model.AbstractEntity;
 import model.Quiz;
 import model.User;
 

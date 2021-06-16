@@ -3,6 +3,7 @@ package services.impl;
 import dao.Repository;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
+import exception.EntityUpdateException;
 import model.Identifiable;
 import services.Service;
 
@@ -27,12 +28,12 @@ public class ServiceImpl<K, V extends Identifiable<K>> implements Service<K, V> 
     }
 
     @Override
-    public V update(V entity) throws EntityNotFoundException {
+    public V update(V entity) throws EntityNotFoundException, EntityUpdateException {
         return repository.update(entity);
     }
 
     @Override
-    public V delete(K id) throws EntityNotFoundException {
+    public V delete(K id) throws EntityNotFoundException, EntityUpdateException {
         return repository.deleteById(id);
     }
 

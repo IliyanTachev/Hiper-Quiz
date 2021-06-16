@@ -1,9 +1,20 @@
 package model;
 
-import dao.AbstractEntity;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+@Entity
+@Table(name="answers")
 public class Answer extends AbstractEntity<Long, Answer> {
+    @ManyToOne
+    @JoinColumn(name="question_id", referencedColumnName = "id")
     private Question question;  // reference to the Question to which the Answer belongs;
+    @NotNull
+    @Size(min=2, max=150)
     private String text;      // string 2 - 150 characters long, supporting Markdown syntax;
     private String picture;   // (optional) - if the Answer includes picture, valid URL;
     private int score;     // integer number (could be negative too);

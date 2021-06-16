@@ -1,10 +1,10 @@
 package dao;
 
 import dao.impl.LongKeyGenerator;
+import dao.impl.RepositoryInMemoryImpl;
 import exception.EntityAlreadyExistsException;
 import exception.EntityNotFoundException;
 import model.Gender;
-import model.Identifiable;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

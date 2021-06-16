@@ -2,11 +2,8 @@ package dao.impl;
 
 import dao.KeyGenerator;
 import dao.QuizRepository;
-import dao.RepositoryInMemoryImpl;
 import model.Quiz;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

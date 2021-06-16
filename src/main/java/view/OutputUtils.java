@@ -21,7 +21,7 @@ public class OutputUtils {
     private static final List<PrintUtil.ColumnDescriptor> userColumns = new ArrayList<>(List.of(
             new PrintUtil.ColumnDescriptor("id", "ID", 5, RIGHT),
             new PrintUtil.ColumnDescriptor("username", "Username", 12, LEFT),
-            new PrintUtil.ColumnDescriptor("email", "Email", 15, LEFT),
+            new PrintUtil.ColumnDescriptor("email", "Email", 23, LEFT),
             new PrintUtil.ColumnDescriptor("password", "Password", 12, LEFT),
             new PrintUtil.ColumnDescriptor("gender", "Gender", 6, RIGHT, 2),
             new PrintUtil.ColumnDescriptor("role", "Role", 13, CENTER),

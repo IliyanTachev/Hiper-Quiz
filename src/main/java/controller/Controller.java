@@ -19,7 +19,9 @@ import java.io.FileNotFoundException;
 public class Controller {
 
     public static void main(String[] args) throws EntityAlreadyExistsException {
-        UserService userService = new UserServiceImpl(new UserRepositoryInMemoryImpl(new LongKeyGenerator(0)));
+        UserRepository userJPARepository = new UserRepositoryJPAImpl();
+        ((UserRepositoryJPAImpl)userJPARepository).init();
+        UserService userService = new UserServiceImpl(userJPARepository);
         QuizService quizService = new QuizServiceImpl(new QuizRepositoryInMemoryImpl(new LongKeyGenerator(0)));
         QuestionService questionService = new QuestionServiceImpl(new QuestionRepositoryInMemoryImpl(new LongKeyGenerator(0)));
         AnswerService answerService = new AnswerServiceImpl(new AnswerRepositoryInMemoryImpl(new LongKeyGenerator(0)));

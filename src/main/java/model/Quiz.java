@@ -1,18 +1,32 @@
 package model;
 
-import dao.AbstractEntity;
-
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="quizzes")
 public class Quiz extends AbstractEntity<Long, Quiz> {
+    @NotNull
+    @Size(min=2, max=80)
     private String title;            // string 2 to 80 characters long;
-    private User author;           // the User that created the Quiz;
+    @ManyToOne
+    @JoinColumn(name="author_id", referencedColumnName = "id")
+    private User author;             // the User that created the Quiz;
+    @Size(min=20, max=250)
     private String description;      // string 20 - 250 characters long, supporting Markdown syntax;
+    @OneToMany(mappedBy = "quiz")
     private List<Question> questions = new ArrayList<>(); // list of Question entities (containing the answers with their scores too);
+    @NotNull
     private int expectedDuration; // integer number in minutes;
     private String picture;          // (optional) - best representing the Quiz, valid URL to a picture, if missing a placeholder picture should be used;
+    @NotNull
     private String tags;             // string including comma separated tags, allowing to find the Quizes by quick search;
+    @ManyToOne
+    @JoinColumn(name="blocked_by_admin_id", referencedColumnName = "id")
+    private Administrator blocked_from_admin;
 
     public Quiz() {
     }
@@ -106,6 +120,14 @@ public class Quiz extends AbstractEntity<Long, Quiz> {
 
     public int getQuestionsSize(){
         return questions.size();
+    }
+
+    public Administrator getBlocked_from_admin() {
+        return blocked_from_admin;
+    }
+
+    public void setBlocked_from_admin(Administrator blocked_from_admin) {
+        this.blocked_from_admin = blocked_from_admin;
     }
 
     @Override

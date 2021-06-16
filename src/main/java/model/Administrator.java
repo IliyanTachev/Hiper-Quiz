@@ -1,9 +1,17 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue(value = "ADMIN")
 public class Administrator extends User{
-    private List<Quiz> quizzesBlocked = null; // for ADMINS only
+    @OneToMany(mappedBy = "blocked_from_admin")
+    private List<Quiz> quizzesBlocked = new ArrayList<>(); // for ADMINS only
 
     public Administrator() {
     }

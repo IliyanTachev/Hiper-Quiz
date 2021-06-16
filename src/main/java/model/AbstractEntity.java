@@ -1,14 +1,21 @@
-package dao;
+package model;
 
-import model.Identifiable;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@MappedSuperclass
 public class AbstractEntity<K extends Comparable<K>, V extends Identifiable<K>> implements Identifiable<K>, Comparable<V>, Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private K id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date created = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modified = new Date();
+
+    public AbstractEntity() {
+    }
 
     @Override
     public K getId() {
@@ -19,15 +26,12 @@ public class AbstractEntity<K extends Comparable<K>, V extends Identifiable<K>> 
     public void setId(K id) {
         this.id = id;
     }
-
     public Date getCreated() {
         return created;
     }
-
     public void setCreated(Date created) {
         this.created = created;
     }
-
     public Date getModified() {
         return modified;
     }

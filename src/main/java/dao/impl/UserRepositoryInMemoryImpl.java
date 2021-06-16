@@ -1,7 +1,6 @@
 package dao.impl;
 
 import dao.KeyGenerator;
-import dao.RepositoryInMemoryImpl;
 import dao.UserRepository;
 import model.LoginUser;
 import model.User;

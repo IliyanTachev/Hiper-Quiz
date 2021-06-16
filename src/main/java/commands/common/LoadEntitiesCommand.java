@@ -3,6 +3,7 @@ package commands.common;
 import dao.*;
 import dao.impl.LongKeyGenerator;
 import exception.EntityAlreadyExistsException;
+import exception.EntityCreationException;
 import model.*;
 import view.Command;
 
@@ -71,6 +72,9 @@ public class LoadEntitiesCommand implements Command {
 //            log.error("Error adding entities to repository", e);
 //            return "Error adding entities to repository";
             return false;
+        } catch (EntityCreationException e) {
+            System.err.println("Error creating entity");
+            e.printStackTrace();
         }
         return true;
     }

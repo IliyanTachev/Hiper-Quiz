@@ -1,13 +1,21 @@
 package model;
 
-import dao.AbstractEntity;
-
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
+@Entity
+@Table(name="questions")
 public class Question extends AbstractEntity<Long, Quiz> {
+    @ManyToOne
+    @JoinColumn(name="quiz_id", referencedColumnName = "id")
     private Quiz quiz;          // reference to the Quiz the Question belongs;
+    @NotNull
+    @Size(min=10, max=300)
     private String text;          // string 10 - 300 characters long, supporting Markdown syntax;
     private String picture;       // (optional) - if the Question includes picture, valid URL;
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers; // list of Answer entities for the Question;
 
     public Question() {

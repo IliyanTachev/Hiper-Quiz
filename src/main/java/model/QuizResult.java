@@ -1,11 +1,20 @@
 package model;
 
-import dao.AbstractEntity;
+import javax.persistence.*;
 
+@Entity
+@Table(name="quiz_results")
 public class QuizResult extends AbstractEntity<Long, QuizResult> {
+    @ManyToOne
+    @JoinColumn(name="player_id", referencedColumnName = "id")
     private User player;  // the reference to the User (Player) taking the 'Quiz;
+    @OneToOne
+    @JoinColumn(name = "quiz_id", referencedColumnName = "id")
     private Quiz quiz;    // reference to the Quiz taken;
     private int score;   // integer number (sum of Answer scores for all answered questions);
+
+    public QuizResult() {
+    }
 
     public QuizResult(User player, Quiz quiz, int score) {
         this.player = player;

@@ -7,6 +7,7 @@ import model.LoginUser;
 import model.User;
 import services.UserService;
 
+import javax.persistence.NoResultException;
 import java.util.Optional;
 
 public class UserServiceImpl extends ServiceImpl<Long, User> implements UserService {
@@ -16,24 +17,28 @@ public class UserServiceImpl extends ServiceImpl<Long, User> implements UserServ
 
     @Override
     public User login(LoginUser user) throws EntityNotFoundException {
-        Optional<User> fetchedUser = ((UserRepositoryInMemoryImpl)super.repository).findByUsernameAndPassword(user);
-        if(fetchedUser.isPresent()){
-            UserRepositoryInMemoryImpl userRepositoryInMemory = null;
-            if(super.repository instanceof UserRepositoryInMemoryImpl)
-                userRepositoryInMemory = (UserRepositoryInMemoryImpl) super.repository;
-            if(userRepositoryInMemory != null) userRepositoryInMemory.setLoggedUser(fetchedUser.get());
-            return userRepositoryInMemory.getLoggedUser();
-        } else throw new EntityNotFoundException("Invalid username or password. Please try again.");
+        Optional<User> fetchedUser;
+        try{
+            fetchedUser = ((UserRepository)super.repository).findByUsernameAndPassword(user);
+        } catch(NoResultException e) {
+            throw new EntityNotFoundException("Invalid username or password. Please try again.");
+        }
+
+            UserRepository userRepository = null;
+            if(super.repository instanceof UserRepository)
+                userRepository = (UserRepository) super.repository;
+            if(userRepository != null) userRepository.setLoggedUser(fetchedUser.get());
+            return userRepository.getLoggedUser();
     }
 
     @Override
     public User logout() {
-        ((UserRepositoryInMemoryImpl)super.repository).setLoggedUser(null);
-        return ((UserRepositoryInMemoryImpl)super.repository).getLoggedUser();
+        ((UserRepository)super.repository).setLoggedUser(null);
+        return ((UserRepository)super.repository).getLoggedUser();
     }
 
     @Override
     public User getLoggedUser() {
-        return ((UserRepositoryInMemoryImpl)super.repository).getLoggedUser();
+        return ((UserRepository)super.repository).getLoggedUser();
     }
 }
