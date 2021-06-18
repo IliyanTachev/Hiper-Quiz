@@ -1,5 +1,6 @@
 package hiperquiz.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -36,7 +37,7 @@ public class User extends AbstractEntity<Long, User> {
     @Size(max=512)
     private String metadata;                  // optional) - string up to 512 characters long, visible and editable only by Administrators;
     private boolean status = true;                   //  boolean - validity status of the user account;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Quiz> quizzes = new ArrayList<>(); //  list of all Quizzes created by the current User;
 
     public User() {

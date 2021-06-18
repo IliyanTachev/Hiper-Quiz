@@ -75,11 +75,13 @@ public class UserRepositoryJPAImpl extends RepositoryJpaImpl<Long, User> impleme
     @Override
     public User deleteById(Long id) throws EntityNotFoundException, EntityUpdateException {
         Optional<User> userFound = findById(id);
-        if(userFound.isEmpty())
+        System.out.println(userFound.toString());
+        if(userFound.isEmpty()) {
             throw new EntityNotFoundException(String.format("User with ID='%s' does not exist.", id));
+        }
 
         try {
-            em.remove(userFound);
+            em.remove(userFound.get());
             return userFound.get();
         } catch (IllegalArgumentException | PersistenceException e) {
             throw new EntityUpdateException("Error deleting user:" + userFound, e);
